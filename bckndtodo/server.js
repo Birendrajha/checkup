@@ -6,7 +6,7 @@ const mongoose=require ('mongoose')
 const jwt=require('jsonwebtoken')
 
 const checkAuth=require('./middelware/auth')
-
+require('./db');
 app.use(express.json())
 
 const User=require('./models/user');
@@ -16,7 +16,7 @@ app.post('/signup',async(req,res)=>{
      const email = req.body.email;
      const password = req.body.password;
      try{
-     const existingUser= await  User.find({email:email})
+     const existingUser= await  User.findOne({email:email})
        if(existingUser===null || existingUser===undefined){
                 bcrypt.hash(password,10,async(err,hash)=>{
                     if(err){
@@ -27,7 +27,7 @@ app.post('/signup',async(req,res)=>{
                                password:hash
                            })
                            await user.save();
-                          res.status(201).send({success:'Signed up'});
+                          //res.status(201).send({success:'Signed up'});
                          const id = user._id;
                          const token = jwt.sign(id.toString(),'mylovelifeistrash')
                           res.status(201).send({user,token});
