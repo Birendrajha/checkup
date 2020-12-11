@@ -30,7 +30,7 @@ app.post('/signup',async(req,res)=>{
                           res.status(201).send({success:'Signed up'});
                          const id = user._id;
                          const token = jwt.sign(id.toString(),'mylovelifeistrash')
-                          res.status(201).send({user});
+                          res.status(201).send({user,token});
                     }
                 })
        }else{
